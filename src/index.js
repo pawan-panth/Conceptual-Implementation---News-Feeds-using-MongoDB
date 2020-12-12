@@ -12,7 +12,12 @@ app.use(express.json());
 
 
 app.get("/newsFeeds", async (req,res)=>{
-    if(req.query.limit && req.query.offset){
+    if(req.query.limit  && req.query.offset){
+        let c = await newsArticleModel.countDocuments();
+        
+        if(c - req.query.offset < req.query.limit){
+            res.send([]);
+        }else{
         let docs = await newsArticleModel.aggregate([
             {
                 $skip: Number(req.query.offset)
@@ -27,31 +32,32 @@ app.get("/newsFeeds", async (req,res)=>{
             }
 
         ]);
-        res.status(200).send(docs);
+        res.status(200).send(docs);}
     }
     else if(req.query.limit){
-        let docs = await newsArticleModel.aggregate([
-            {
-                $skip: 10
-            },
-            {
-                $limit: Number(req.query.limit)
-            },
-            {
-                $project:{
-                    _id: 0
+        if(req.query.limit > await newsArticleModel.countDocuments()){
+            res.send([]);
+        }else{
+            let docs = await newsArticleModel.aggregate([
+                {
+                    $skip: 10
+                },
+                {
+                    $limit: Number(req.query.limit)
+                },
+                {
+                    $project:{
+                        _id: 0
+                    }
                 }
-            }
-        ]);
-        res.status(200).send(docs);
+            ]);
+            res.status(200).send(docs);
+        }
     }
     else if(req.query.offset){
         let docs =  await newsArticleModel.aggregate([
             {
                 $skip: number(req.query.offset)
-            },
-            {
-                $limit: 10
             },
             {
                 $project:{
