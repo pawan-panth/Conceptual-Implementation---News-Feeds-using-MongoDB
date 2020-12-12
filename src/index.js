@@ -49,9 +49,6 @@ app.get("/newsFeeds", async (req,res)=>{
     else{
         let docs =  await newsArticleModel.aggregate([
             {
-                $skip: 0
-            },
-            {
                 $limit: 10
             }
         ]);
