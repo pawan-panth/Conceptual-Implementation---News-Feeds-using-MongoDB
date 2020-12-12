@@ -28,7 +28,7 @@ app.get("/newsFeeds", async (req,res)=>{
             {
                 $project:{
                     _id: 0,
-                    _v:0
+                    __v:0
                 }
             }
 
@@ -49,7 +49,7 @@ app.get("/newsFeeds", async (req,res)=>{
                 {
                     $project:{
                         _id: 0,
-                        _v: 0
+                        __v: 0
                     }
                 }
             ]);
@@ -64,7 +64,7 @@ app.get("/newsFeeds", async (req,res)=>{
             {
                 $project:{
                     _id: 0,
-                    _v: 0
+                    __v: 0
                 }
             }
         ]);
@@ -78,7 +78,7 @@ app.get("/newsFeeds", async (req,res)=>{
             {
                 $project:{
                     _id: 0,
-                    _v: 0
+                    __v: 0
                 }
             }
         ]);
