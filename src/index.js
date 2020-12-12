@@ -47,15 +47,16 @@ app.get("/newsFeeds", async (req,res)=>{
         res.status(200).send(docs);
     }
     else{
-    let docs =  await newsArticleModel.aggregate([
-        {
-            $skip: Number(req.query.offset)
-        },
-        {
-            $limit: 10
-        }
-    ]);
-    res.status(200).send(docs);}
+        let docs =  await newsArticleModel.aggregate([
+            {
+                $skip: 0
+            },
+            {
+                $limit: 10
+            }
+        ]);
+        res.status(200).send(docs);
+   }
 })
 
 app.listen(port, () => console.log(`App listening on port ${port}!`))
