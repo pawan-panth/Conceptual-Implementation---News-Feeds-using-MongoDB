@@ -11,7 +11,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 
-app.get("/newsfeed", async (req,res)=>{
+app.get("/newsFeeds", async (req,res)=>{
     if(req.query.limit && req.query.offset){
         let docs = await newsArticleModel.aggregate([
             {
