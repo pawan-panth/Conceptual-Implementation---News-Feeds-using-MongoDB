@@ -64,7 +64,6 @@ app.get("/newsFeeds", async (req,res)=>{
                     _id: 0
                 }
             }
-
         ]);
         res.status(200).send(docs);
     }
@@ -81,7 +80,7 @@ app.get("/newsFeeds", async (req,res)=>{
         ]);
         res.status(200).send(docs);
    }
-   res.send();
+  
 })
 
 app.listen(port, () => console.log(`App listening on port ${port}!`))
