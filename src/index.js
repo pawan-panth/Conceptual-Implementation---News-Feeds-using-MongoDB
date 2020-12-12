@@ -19,6 +19,11 @@ app.get("/newsFeeds", async (req,res)=>{
             },
             {
                 $limit:  Number(req.query.limit)
+            },
+            {
+                $project:{
+                    _id: 0
+                }
             }
 
         ]);
@@ -31,6 +36,11 @@ app.get("/newsFeeds", async (req,res)=>{
             },
             {
                 $limit: Number(req.query.limit)
+            },
+            {
+                $project:{
+                    _id: 0
+                }
             }
         ]);
         res.status(200).send(docs);
@@ -42,7 +52,13 @@ app.get("/newsFeeds", async (req,res)=>{
             },
             {
                 $limit: 10
+            },
+            {
+                $project:{
+                    _id: 0
+                }
             }
+
         ]);
         res.status(200).send(docs);
     }
@@ -50,6 +66,11 @@ app.get("/newsFeeds", async (req,res)=>{
         let docs =  await newsArticleModel.aggregate([
             {
                 $limit: 10
+            },
+            {
+                $project:{
+                    _id: 0
+                }
             }
         ]);
         res.status(200).send(docs);
