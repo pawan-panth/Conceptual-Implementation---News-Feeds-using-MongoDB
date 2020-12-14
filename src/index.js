@@ -15,22 +15,12 @@ const isInvalid = (val) =>{
 };
 
 app.get("/newFeeds", async (req,res)=>{
-    if(!isInvalid(req.query.offset) &&  !isInvalid(req.query.limit)){
-    let found = await newsArticleModel.find({},{_id:0,__v:0}).skip(req.query.offset).limit(req.query.limit);
-        res.send(found);
-    }
-    else if(!isInvalid(req.query.offset)){
-        let found = await newsArticleModel.find({},{_id:0,__v:0}).skip(req.query.offset).limit(10);
-        res.send(found);
-    }
-    else if(!isInvalid(req.query.limit)){
-        let found = await newsArticleModel.find({},{_id:0,__v:0}).skip(0).limit(req.query.limit);
-        res.send(found);
-    }else{
-        let found = await newsArticleModel.find({},{_id:0,__v:0}).skip(0).limit(10);
-        res.send(found);
+    const { limit, offset } = req.query;
 
-    }
+  const lim = limit == undefined ? 10 : isNaN(limit) ? 10 : Number(limit);
+  const off = offset == undefined ? 0 : isNaN(offset) ? 0 : Number(offset);
+  const result = await newsArticleModel.find().skip(off).limit(lim);
+  res.send(result);
 
     
   
