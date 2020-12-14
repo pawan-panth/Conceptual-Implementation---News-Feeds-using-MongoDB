@@ -14,7 +14,7 @@ const isInvalid = (val) =>{
     return val === null || val === undefined|| isNaN(Number(val));
 };
 
-app.get("/newsFeeds", async (req,res)=>{
+app.get("/newFeeds", async (req,res)=>{
     if(!isInvalid(req.query.offset) &&  !isInvalid(req.query.limit)){
     let found = await newsArticleModel.find({},{_id:0,__v:0}).skip(req.query.offset).limit(req.query.limit);
         res.send(found);
