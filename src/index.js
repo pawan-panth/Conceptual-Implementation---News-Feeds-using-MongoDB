@@ -10,80 +10,29 @@ const onePageArticleCount = 10;
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+const isInvalid = (val) =>{
+    return val === null || val === undefined|| isNaN(Number(val));
+};
 
 app.get("/newsFeeds", async (req,res)=>{
-    if(req.query.limit  && req.query.offset){
-        let c = await newsArticleModel.countDocuments();
-        
-        if(c - req.query.offset < req.query.limit){
-            res.send([]);
-        }else{
-        let docs = await newsArticleModel.aggregate([
-            {
-                $skip: Number(req.query.offset)
-            },
-            {
-                $limit:  Number(req.query.limit)
-            },
-            {
-                $project:{
-                    _id: 0,
-                    __v:0
-                }
-            }
+    if(!isInvalid(req.query.offset) &&  !isInvalid(req.query.limit)){
+        let found = await newsArticleModel.find({}).skip(req.query.offset).limit(req.query.limit);
+        res.send(found);
+    }
+    else if(!isInvalid(req.query.offset)){
+        let found = await newsArticleModel.find({}).skip(req.query.offset).limit(10);
+        res.send(found);
+    }
+    else if(!isInvalid(req.query.limit)){
+        let found = await newsArticleModel.find({}).skip(0).limit(req.query.limit);
+        res.send(found);
+    }else{
+        let found = await newsArticleModel.find({}).skip(0).limit(10);
+        res.send(found);
 
-        ]);
-        res.status(200).send(docs);}
     }
-    else if(req.query.limit){
-        if(req.query.limit > await newsArticleModel.countDocuments()){
-            res.send([]);
-        }else{
-            let docs = await newsArticleModel.aggregate([
-                {
-                    $skip: 10
-                },
-                {
-                    $limit: Number(req.query.limit)
-                },
-                {
-                    $project:{
-                        _id: 0,
-                        __v: 0
-                    }
-                }
-            ]);
-            res.status(200).send(docs);
-        }
-    }
-    else if(req.query.offset){
-        let docs =  await newsArticleModel.aggregate([
-            {
-                $skip: number(req.query.offset)
-            },
-            {
-                $project:{
-                    _id: 0,
-                    __v: 0
-                }
-            }
-        ]);
-        res.status(200).send(docs);
-    }
-    else{
-        let docs =  await newsArticleModel.aggregate([
-            {
-                $limit: 10
-            },
-            {
-                $project:{
-                    _id: 0,
-                    __v: 0
-                }
-            }
-        ]);
-        res.status(200).send(docs);
-   }
+
+    res.send(found);
   
 })
 
