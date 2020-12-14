@@ -16,23 +16,23 @@ const isInvalid = (val) =>{
 
 app.get("/newsFeeds", async (req,res)=>{
     if(!isInvalid(req.query.offset) &&  !isInvalid(req.query.limit)){
-        let found = await newsArticleModel.find({}).skip(req.query.offset).limit(req.query.limit);
+    let found = await newsArticleModel.find({},{_id:0,__v:0}).skip(req.query.offset).limit(req.query.limit);
         res.send(found);
     }
     else if(!isInvalid(req.query.offset)){
-        let found = await newsArticleModel.find({}).skip(req.query.offset).limit(10);
+        let found = await newsArticleModel.find({},{_id:0,__v:0}).skip(req.query.offset).limit(10);
         res.send(found);
     }
     else if(!isInvalid(req.query.limit)){
-        let found = await newsArticleModel.find({}).skip(0).limit(req.query.limit);
+        let found = await newsArticleModel.find({},{_id:0,__v:0}).skip(0).limit(req.query.limit);
         res.send(found);
     }else{
-        let found = await newsArticleModel.find({}).skip(0).limit(10);
+        let found = await newsArticleModel.find({},{_id:0,__v:0}).skip(0).limit(10);
         res.send(found);
 
     }
 
-    res.send(found);
+    
   
 })
 
